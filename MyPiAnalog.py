@@ -58,13 +58,17 @@ class MyPiAnalog:
     def read_resistance(self):
         n = 7
         readings = []
+        infinites = []
         for i in range(0, n):
             reading = self.analog_read()
-            readings.append(reading)
+            if reading != 'infinite':
+                readings.append(reading)
+            else:
+                infinites.append(reading)
             readings.sort()
-        t = readings[int(n / 2)]
-        if t == 'infinite':
+        if len(infinites) >= 4:
             return 'infinite'
+        t = readings[int(len(readings) / 2)]
         T = -t / math.log(1.0 - (self.Vt / self.Vs))
         RC = T
         r = (RC / self.C) - self.R1
